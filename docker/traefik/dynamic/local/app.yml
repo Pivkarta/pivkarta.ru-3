@@ -1,13 +1,40 @@
 http:
   routers:
-    app:
-      rule: 'PathPrefix(`/`)'
+    pivkarta-ru-old-front:
+      rule: 'Host(`old-pivkarta.localhost`) && PathPrefix(`/`)'
       entryPoints:
         - web
-      middlewares:
-        - compress
-      service: varnish
-      priority: 1
+      service: pivkarta-ru-app--old-front
+      # tls:
+      #   certResolver: letsencrypt
+      priority: 100
+
+    # pivkarta-ru-old-api-path:
+    #   rule: 'Host(`old-pivkarta.localhost`) && PathPrefix(`/api/`)'
+    #   entryPoints:
+    #     - web
+    #   service: pivkarta-ru-app--old-api
+    #   # tls:
+    #   #   certResolver: letsencrypt
+    #   priority: 200
+
+    pivkarta-ru-old-api:
+      rule: 'Host(`old-pivkarta-api.localhost`)'
+      entryPoints:
+        - web
+      service: pivkarta-ru-app--old-api
+      # tls:
+      #   certResolver: letsencrypt
+      priority: 200
+
+    # app:
+    #   rule: 'PathPrefix(`/`)'
+    #   entryPoints:
+    #     - web
+    #   middlewares:
+    #     - compress
+    #   service: varnish
+    #   priority: 1
 
   middlewares:
     compress:
@@ -16,6 +43,16 @@ http:
           - text/event-stream
 
   services:
+    pivkarta-ru-app--old-front:
+      loadBalancer:
+        servers:
+          - url: 'http://docker-pivkartaru-front-1:3000'
+
+    pivkarta-ru-app--old-api:
+      loadBalancer:
+        servers:
+          - url: 'http://docker-pivkartaru-api-1:4000'
+
     app:
       loadBalancer:
         servers:

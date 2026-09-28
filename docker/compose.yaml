@@ -12,14 +12,19 @@ services:
       - external
   traefik:
     image: traefik:v3.6.1
+    hostname: old-pivkarta.localhost
     volumes:
       - ${TRAEFIK_STATIC_CONFIG:-./traefik/traefik.yml}:/etc/traefik/traefik.yml:ro
       - ${TRAEFIK_DYNAMIC_DIR:-./traefik/dynamic/local}:/etc/traefik/dynamic:ro
       - ./traefik/logs:/var/log/traefik
       - ./traefik/certs:/etc/traefik/certs
     networks:
-      - default
-      - external
+      default:
+        aliases:
+          - old-pivkarta.localhost
+      external:
+        aliases:
+          - old-pivkarta.localhost
     labels:
       - 'traefik.enable=true'
 
