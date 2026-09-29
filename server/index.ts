@@ -1,9 +1,11 @@
+import 'dotenv/config'
 import express from 'express'
 import { createServer } from 'node:http'
 import type { ServerBuild } from 'react-router'
 import type { ViteDevServer } from 'vite'
 
-import { setupGraphqlMiddleware } from './graphqlMiddleware'
+// import { setupGraphqlMiddleware } from './graphqlMiddleware'
+import { setupGraphqlServer } from './graphqlServer'
 
 const dev = process.env.NODE_ENV === 'development'
 const port = Number(process.env.PORT || 3000)
@@ -44,8 +46,9 @@ async function startServer() {
 
   const httpServer = createServer(app)
 
-  // GraphQL middleware
-  stopGraphql = await setupGraphqlMiddleware(app, httpServer)
+  // GraphQL middleware (must be before Vite to handle /api)
+  const { stop } = await setupGraphqlServer(app, httpServer)
+  stopGraphql = stop
 
   const { createRequestHandler } = await import('@react-router/express')
 
