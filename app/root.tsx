@@ -12,6 +12,7 @@ import {
   isRouteErrorResponse,
   useRouteError,
 } from 'react-router'
+import { AppProviders } from './components/AppProviders'
 
 const betterlyticsId = import.meta.env.BETTERLYTICS_SITE_ID
 
@@ -34,7 +35,9 @@ export function Layout({ children }: { children: ReactNode }) {
         )}
       </head>
       <body>
-        <SiteLayout>{children}</SiteLayout>
+        <AppProviders>
+          <SiteLayout>{children}</SiteLayout>
+        </AppProviders>
         <ScrollRestoration />
         <Scripts />
       </body>
