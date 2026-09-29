@@ -8,6 +8,8 @@ import type { ViteDevServer } from 'vite'
 import { setupGraphqlServer } from './graphqlServer'
 import { createImageThumbMiddleware } from './middleware/ImageThumb'
 
+const cwd = process.cwd()
+
 const dev = process.env.NODE_ENV === 'development'
 const port = Number(process.env.PORT || 3000)
 
@@ -45,8 +47,12 @@ async function startServer() {
   app.set('trust proxy', true)
   app.disable('x-powered-by')
   app.use('/images', createImageThumbMiddleware())
+  // app.use('/shared', express.static('shared'))
+  app.use(express.static(cwd + '/shared'))
 
   const httpServer = createServer(app)
+
+  setupShutdown(httpServer)
 
   // GraphQL middleware (must be before Vite to handle /api)
   const { stop } = await setupGraphqlServer(app, httpServer)
@@ -88,8 +94,6 @@ async function startServer() {
       (await import('build/server/index.js')) as ServerBuild
     app.all('/{*splat}', createRequestHandler({ build }))
   }
-
-  setupShutdown(httpServer)
 
   httpServer.listen(port, '0.0.0.0', () => {
     // eslint-disable-next-line no-console
