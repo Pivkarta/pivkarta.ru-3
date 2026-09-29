@@ -1,3 +1,62 @@
-query oldCompanies {
-  oldCompanies 
+query oldCompanies($take: Int, $skip: Int) {
+  total: oldCompaniesCount
+
+  oldCompanies(take: $take, skip: $skip) {
+    ...OldCompanyNoNesting
+  }
+}
+
+fragment OldCompanyNoNesting on OldCompany {
+  id
+  name
+  place_id
+  url_name
+  uri
+  address
+  is_bar
+  is_shop
+  is_brewery
+}
+
+fragment OldCompany_ on OldCompany {
+  ...OldCompanyNoNesting
+}
+
+query oldCompany($place_id: Int!, $take: Int, $skip: Int) {
+  oldCompany(place_id: $place_id) {
+    ...OldCompanyNoNesting
+    description
+    website
+    phone
+    email
+    work_hours
+    metro
+    active
+    content
+    image
+    gallery
+    createdAt
+    updatedAt
+    Owner {
+      id
+      username
+      user_id
+      fullname
+    }
+    beersCount
+    beers(take: $take, skip: $skip) {
+      id
+      price
+      updatedAt
+      Beer {
+        id
+        name
+        manufacturer
+        beer_id
+        url_name
+        alcohol
+        color
+      }
+    }
+  }
 }

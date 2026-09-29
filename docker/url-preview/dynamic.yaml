@@ -1,0 +1,33 @@
+http:
+  routers:
+    secure:
+      rule: Host(`pivkarta.ru`)
+      entryPoints: [websecure]
+      service: app
+      tls: {}
+    aliases:
+      rule: Host(`pivkarta.ru`) || Host(`www.pivkarta.ru`)
+      entryPoints: [web]
+      middlewares: [canonical]
+      service: app
+    www:
+      rule: Host(`www.pivkarta.ru`)
+      entryPoints: [websecure]
+      middlewares: [canonical]
+      service: app
+      tls: {}
+  middlewares:
+    canonical:
+      redirectRegex:
+        regex: '^https?://(?:www\.)?pivkarta\.ru(?::[0-9]+)?/(.*)'
+        replacement: 'https://pivkarta.ru/${1}'
+        permanent: true
+  services:
+    app:
+      loadBalancer:
+        servers:
+          - url: http://varnish:80
+tls:
+  certificates:
+    - certFile: /cert.pem
+      keyFile: /key.pem

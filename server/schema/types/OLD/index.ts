@@ -1,1 +1,6 @@
-import './Companies'
+import './Company'
+import './User'
+import './Beer'
+import './CompanyBeer'
+import './queries'
+import './relations'

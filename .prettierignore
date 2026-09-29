@@ -1,5 +1,8 @@
 /node_modules
 /build
+/shared
+/uploads
 /.react-router
 /storybook-static
 package-lock.json
+generated

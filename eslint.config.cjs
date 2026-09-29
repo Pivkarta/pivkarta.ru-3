@@ -12,6 +12,9 @@ module.exports = [
     ignores: [
       'node_modules/**',
       'build/**',
+      'shared/**',
+      'uploads/**',
+      '**/generated/**',
       '.react-router/**',
       'storybook-static/**',
       'package-lock.json',

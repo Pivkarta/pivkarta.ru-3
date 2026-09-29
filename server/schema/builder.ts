@@ -1,13 +1,11 @@
 import SchemaBuilder from '@pothos/core'
+import SimpleObjectsPlugin from '@pothos/plugin-simple-objects'
 import { DateTimeResolver, JSONResolver } from 'graphql-scalars'
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Context {
-  // Extend as needed
-}
+import { PrismaContext } from 'server/context/interfaces'
+// import { GraphQLUpload } from './scalars/Upload'
 
 export const builder = new SchemaBuilder<{
-  Context: Context
+  Context: PrismaContext
   Scalars: {
     DateTime: {
       Input: Date
@@ -17,16 +15,19 @@ export const builder = new SchemaBuilder<{
       Input: unknown
       Output: unknown
     }
+    Upload: {
+      Input: unknown
+      Output: never
+    }
   }
-}>({})
+}>({
+  plugins: [SimpleObjectsPlugin],
+  // relay: {},
+})
 
 builder.addScalarType('DateTime', DateTimeResolver)
 builder.addScalarType('Json', JSONResolver)
+// builder.addScalarType('Upload', GraphQLUpload)
 
-builder.queryType({
-  fields: (t) => ({
-    health: t.string({
-      resolve: () => 'ok',
-    }),
-  }),
-})
+builder.queryType({})
+// builder.mutationType({})

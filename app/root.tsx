@@ -18,7 +18,7 @@ const betterlyticsId = import.meta.env.BETTERLYTICS_SITE_ID
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <HtmlStyled lang="en">
+    <HtmlStyled lang="ru">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -55,10 +55,10 @@ export function ErrorBoundary() {
       <h1 tabIndex={-1}>
         {isRouteErrorResponse(error)
           ? `${error.status} ${error.statusText}`
-          : 'Something went wrong'}
+          : 'Не удалось загрузить страницу'}
       </h1>
-      <p>Please reload the page to retry.</p>
-      <a href="/">Return home</a>
+      <p>Обновите страницу, чтобы попробовать ещё раз.</p>
+      <a href="/">На главную</a>
     </>
   )
 }

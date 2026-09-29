@@ -1,0 +1,26 @@
+query oldUsers($where: OldUserWhereInput, $take: Int, $skip: Int) {
+  total: oldUsersCount(where: $where)
+  oldUsers(where: $where, take: $take, skip: $skip) {
+    id
+    user_id
+    username
+    fullname
+    image
+    companiesCount
+  }
+}
+
+query oldUser($id: String!, $take: Int, $skip: Int) {
+  oldUser(id: $id) {
+    id
+    user_id
+    username
+    fullname
+    image
+    about
+    companiesCount
+    Companies(take: $take, skip: $skip) {
+      ...OldCompanyNoNesting
+    }
+  }
+}

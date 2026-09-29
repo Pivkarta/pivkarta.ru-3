@@ -71,28 +71,14 @@ const fetchWithUploadProgress: FetchWithProgress = (input, init) => {
 
 let wsLink: GraphQLWsLink | undefined
 
-function getEndpoint() {
-  let endpoint
-  const origin =
-    typeof window !== 'undefined' ? window.location?.origin : undefined
-
-  if (origin && process.env.NODE_ENV !== 'test') {
-    endpoint = `${origin}/api/`
-  } else if (typeof window === 'undefined' && typeof require !== 'undefined') {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const os = require('os')
-    const hostname = os.hostname()
-    const PORT = (process.env.PORT && parseInt(process.env.PORT, 10)) || 3000
-    endpoint = `http://${hostname}:${PORT}/api/`
-  } else {
-    if (typeof window !== 'undefined') {
-      endpoint = `${window.location.origin}/api/`
-    } else {
-      endpoint = '/api/'
-    }
+function getEndpoint(): string {
+  if (typeof window !== 'undefined') {
+    return `${window.location.origin}/api/`
   }
 
-  return endpoint
+  // GraphQL обслуживается тем же Node.js-сервисом, что и сайт.
+  const port: number = Number(process.env.PORT || 3000)
+  return `http://127.0.0.1:${port}/api/`
 }
 
 /**

@@ -29,8 +29,8 @@ import {
 import { readFiles, clearOutputDirectory, writeFileIfChanged } from './files'
 
 const scalars = {
-  DateTime: 'globalThis.Date',
-  Json: 'globalThis.Record<string, any> | globalThis.Array<any>',
+  DateTime: 'string',
+  Json: 'unknown',
   Long: 'number',
   Upload: 'globalThis.File',
   BigInt: 'string',

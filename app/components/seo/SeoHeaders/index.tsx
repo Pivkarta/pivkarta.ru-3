@@ -31,8 +31,8 @@ export interface SeoHandle {
 }
 
 const notFound: SeoHeadersProps = {
-  title: 'Page not found — HAIH',
-  description: 'The requested page could not be found.',
+  title: 'Страница не найдена — Пивная карта',
+  description: 'Не удалось найти запрошенную страницу.',
   noindex: true,
 }
 
@@ -61,7 +61,7 @@ export function createSeoMeta({
   image = noindex ? undefined : image
   const imageUrl = image ? new URL(image.src, site.origin).href : undefined
   const websiteId = `${site.origin}/#website`
-  const blogId = `${site.origin}/blog#blog`
+  const blogId = `${site.origin}/blog/showlist/#blog`
   const graph: SchemaNode[] = canonical
     ? [
         {
@@ -114,10 +114,10 @@ export function createSeoMeta({
     graph.push({
       '@type': 'Blog',
       '@id': blogId,
-      url: `${site.origin}/blog`,
-      name: 'HAIH Blog',
+      url: `${site.origin}/blog/showlist/`,
+      name: 'Блоги — Пивная карта',
       description:
-        'Observations, questions and conclusions from building HAIH, recorded against specific project revisions.',
+        'Публикации о пиве, заведениях и событиях на «Пивной карте».',
       inLanguage: site.language,
       isPartOf: { '@id': websiteId },
       ...(blog
@@ -153,7 +153,7 @@ export function createSeoMeta({
     graph.push({
       '@type': 'ItemList',
       '@id': `${canonical}#items`,
-      name: collection?.name ?? 'HAIH blog posts',
+      name: collection?.name ?? 'Публикации «Пивной карты»',
       numberOfItems: items.length,
       itemListElement: items.map((item, index) => ({
         '@type': 'ListItem',
@@ -208,14 +208,6 @@ export function createSeoMeta({
             },
           }
         : {}),
-      citation: article.commitUrl,
-      about: {
-        '@type': 'SoftwareSourceCode',
-        name: 'HAIH Site',
-        codeRepository: 'https://github.com/haih-net/haih.site',
-        version: article.version,
-        url: article.commitUrl,
-      },
     })
   }
   const data: SchemaGraph = {

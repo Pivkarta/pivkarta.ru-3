@@ -35,6 +35,7 @@ function serveShared(): Plugin {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
+    resolve: { tsconfigPaths: true },
     plugins: [
       wyw({ include: ['**/*.{ts,tsx}'] }),
       reactRouter(),

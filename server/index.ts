@@ -6,6 +6,7 @@ import type { ViteDevServer } from 'vite'
 
 // import { setupGraphqlMiddleware } from './graphqlMiddleware'
 import { setupGraphqlServer } from './graphqlServer'
+import { createImageThumbMiddleware } from './middleware/ImageThumb'
 
 const dev = process.env.NODE_ENV === 'development'
 const port = Number(process.env.PORT || 3000)
@@ -43,6 +44,7 @@ async function startServer() {
   const app = express()
   app.set('trust proxy', true)
   app.disable('x-powered-by')
+  app.use('/images', createImageThumbMiddleware())
 
   const httpServer = createServer(app)
 

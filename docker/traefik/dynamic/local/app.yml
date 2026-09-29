@@ -27,14 +27,14 @@ http:
       #   certResolver: letsencrypt
       priority: 200
 
-    # app:
-    #   rule: 'PathPrefix(`/`)'
-    #   entryPoints:
-    #     - web
-    #   middlewares:
-    #     - compress
-    #   service: varnish
-    #   priority: 1
+    app:
+      rule: 'PathPrefix(`/`)'
+      entryPoints:
+        - web
+      middlewares:
+        - compress
+      service: varnish
+      priority: 1
 
   middlewares:
     compress:

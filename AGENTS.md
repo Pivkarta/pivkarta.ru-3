@@ -1,167 +1,175 @@
-# HAIH Site — Project Instructions
+# Пивная карта — инструкции по проекту
 
-## Purpose
+## Назначение
 
-Build haih.site as the public product website and a working demonstration of requirement-driven development with AI.
+Развивать «Пивную карту» — сайт для поиска пива, баров, пабов, магазинов и пивоварен. Основной сценарий: выбрать город, найти сорт или заведение, изучить ассортимент и перейти к контактам или карте.
 
-This repository is the website itself. It is not an engine, framework, starter kit, or package that visitors must download to create their projects. Implement what this website actually needs. Gradually document its constituent solutions and the reasons for choosing them.
+Этот репозиторий содержит сам сайт, а не универсальный движок, библиотеку или стартовый шаблон. Реализовывать только необходимые сайту возможности. Сохранять связи между сортами пива, ассортиментом заведений, каталогами и картой.
 
-The website is its own first demonstration. Its implementation, experiments, checks, commits, and eventually releases provide evidence for the approach it describes. Do not present planned or untested capabilities as proven.
+Не выдавать запланированные возможности за работающие, а исторические сведения — за актуальные. Цены, наличие, часы работы и рейтинги показывать с учётом источника и свежести данных.
 
-All project content, UI copy, documentation, code identifiers, and commit/release descriptions must be in English. Discussion with the owner may be in Russian.
+## Язык проекта
 
-## Decision model
+Весь проект ведётся на русском языке. Этот файл, документация, постановки задач, комментарии и пояснения, тексты интерфейса, макеты, сообщения об ошибках, метаданные страниц, описания коммитов и выпусков должны быть на русском. Общение с владельцем также ведётся на русском.
 
-Start with the need, not with a preferred technology.
+Не создавать англоязычные версии материалов без прямого запроса владельца. При изменении существующих материалов переводить относящиеся к задаче английские тексты на русский.
 
-For each proposed solution, distinguish:
+Названия технологий, внешних брендов и сортов, программные ключевые слова, имена сторонних API, команды, пути файлов и существующие технические идентификаторы сохранять в исходном виде, если перевод нарушит совместимость. Требование русского языка не означает переименование программных интерфейсов или массовое изменение URL. Пользовательские надписи и пояснения должны быть русскими независимо от технических имён.
 
-- Purpose: the need it is intended to satisfy.
-- Capabilities: what it provides or is expected to provide.
-- Requirements: the environment, inputs, dependencies, resources, and constraints it needs.
-- Trade-offs and applicability: where its cost is justified and where it is not.
-- Evidence: what has been checked, under which conditions, and what remains unknown.
+## Принятие решений
 
-A solution's requirements become obligations of the system that adopts it. Evaluate compatibility and the total cost of the composition, including agent context, diagnosis, maintenance, and verification. Fewer dependencies alone do not prove a simpler solution.
+Начинать с потребности, а не с предпочтительной технологии. Для каждого решения различать:
 
-Use the least costly architecture that fully meets current requirements. Do not remove required capabilities merely to achieve a smaller stack. Do not add infrastructure for hypothetical future needs.
+- Назначение: какую потребность оно закрывает.
+- Возможности: что предоставляет или должно предоставлять.
+- Требования: необходимые данные, окружение, зависимости, ресурсы и ограничения.
+- Компромиссы: где затраты оправданы, а где нет.
+- Подтверждения: что проверено, в каких условиях и что остаётся неизвестным.
 
-## Solutions as website content
+Требования выбранного решения становятся обязательствами всей системы. Оценивать совместимость и суммарную стоимость разработки, контекста агента, диагностики, сопровождения и проверок. Меньшее количество зависимостей само по себе не доказывает простоту.
 
-Solution is the common product concept for third-party technologies, our own implementations, and ideas that have not been implemented yet. Different maturity levels do not create separate entity types. Research and practical demonstrations belong to the development and evidence of a Solution.
+Выбирать наименее затратную архитектуру, полностью удовлетворяющую текущим требованиям. Не убирать нужные возможности ради сокращения стека и не добавлять инфраструктуру под гипотетические задачи.
 
-Solutions may contain and depend on other Solutions. Do not turn this conceptual model into a mandatory runtime framework, graph database, or elaborate content system. Formal composition is itself a Solution with costs; a small website may not need it.
+## Текущий этап
 
-Lead visitor-facing explanations with needs and benefits. Reveal requirements, limitations, implementation details, and evidence progressively. A known need does not imply a known implementation: explicitly preserve open decisions.
+Задача редизайна находится в `projects/tasks/001--redesign/`. Сейчас изучаем существующий сайт, описываем требования и создаём дизайн. До отдельного поручения владельца не программировать редизайн.
 
-## Current scope
+Общий макет приложения находится в `app/components/Layout/index.tsx`. При дальнейшей реализации использовать его как точку интеграции страниц, сохраняя общую навигацию, основную область содержимого и управление фокусом.
 
-Maintain the website's development and production-build workflow. The current site also includes an illustrated homepage, Solutions, and an individually designed blog. Implement the owner's requested page work without introducing a large component library or expanding scope speculatively.
+Редизайн охватывает главную, поиск и карту, каталоги и карточки заведений и пива, выбор города, публикации, пользовательские и владельческие сценарии. Наличие страницы в плане не означает, что её дизайн или реализация уже готовы.
 
-Do not implement all future demonstrations now. The broader Solutions direction includes static delivery, small dynamic features, standalone APIs, persistence, typed applications, authorization, and commerce. These are possible paths, not a mandatory linear stack. Describe unimplemented Solutions honestly as in progress when their pages are introduced.
+Поддерживать существующие процессы разработки и производственной сборки. Не добавлять большую библиотеку компонентов и не расширять задачу без конкретной потребности. Не переносить в «Пивную карту» продуктовые разделы и демонстрации другого проекта.
 
-## Design approach
+## Подход к дизайну
 
-Use mobile-first responsive design. Start with styles for the smallest supported viewport, then add breakpoints for larger screens. This ensures core content and functionality work on constrained devices before enhancing for desktop.
+Проектировать сначала для небольших экранов, затем расширять компоновку для планшетов и компьютеров. Основные сценарии должны оставаться доступными на телефоне.
 
-## Source structure and dependency boundaries
+Давать приоритет поиску, городу и выбору заведения. Разделять действия посетителя и владельца. Не подменять реальные фотографии заведений сгенерированными без явной пометки. Для отсутствующих данных, пустых результатов, загрузки и ошибок предусматривать понятные состояния.
 
-- `app/pages/<Page>/` owns page rendering, child sections, page-specific data and assets. Keep assets beside their owning page or section.
-- `app/components/` contains reusable components and shared infrastructure such as Layout and SEO. These modules must not import pages or page-specific assets.
-- `app/routes/` contains thin React Router modules: route metadata, integration exports, and the page entry point. Group related routes in directories such as `app/routes/blog/`.
-- `docker/` contains Docker Compose files and service configurations. `docker/traefik/` holds Traefik static config, dynamic routing rules, certs and logs. `docker/varnish/` holds Varnish VCL configuration.
-- Pass page-specific choices through typed parameters. In particular, SEO images (source, alternative text, width and height) are chosen by the route/page and passed to `createSeoMeta`; the generic SEO implementation must not choose or import a homepage image. If no image is supplied, omit image tags.
-- Data-only modules must not load styles as side effects. Import a styled component in the view that renders it.
-- Preserve the owner's in-progress moves and deletions. Read the current tree before editing; do not restore an old folder structure or deleted demonstration route. Update imports, prerender lists, sitemap entries and checks together when routes move or disappear.
+## Структура исходников и зависимости
 
-## Styling
+- `app/pages/<Page>/` содержит страницу, её разделы, данные и ресурсы. Хранить ресурсы рядом с использующей их страницей или разделом.
+- `app/components/` содержит переиспользуемые компоненты и общую инфраструктуру, включая Layout и SEO. Общие модули не должны импортировать страницы и их ресурсы.
+- `app/routes/` содержит тонкие модули React Router: метаданные, интеграционные экспорты и подключение страницы. Связанные маршруты группировать в папках.
+- `docker/` содержит файлы Docker Compose и настройки сервисов. `docker/traefik/` — конфигурацию Traefik, маршруты, сертификаты и журналы; `docker/varnish/` — настройки VCL.
+- Передавать настройки конкретной страницы через типизированные параметры. Изображение для SEO, его описание и размеры выбирает страница или маршрут и передаёт в `createSeoMeta`. Общий SEO-модуль не должен импортировать изображение главной. Если изображения нет, не добавлять соответствующие теги.
+- Модули данных не должны подключать стили побочным эффектом. Стилизованный компонент импортируется там, где он отображается.
+- Перед правками изучать актуальное дерево. Сохранять незавершённые перемещения и удаления владельца. Не восстанавливать старую структуру и удалённые маршруты. При изменении маршрутов согласованно обновлять импорты, предварительный рендеринг, карту сайта и проверки.
 
-Use Linaria `styled` components from `@linaria/react`, exported from colocated `styles.ts` files. Render those components as the page/component wrappers; see `app/pages/MainPage/styles.ts` and its consuming `index.tsx`.
+## Стили
 
-Do not import standalone `.css` files or replace this convention with CSS Modules. Named TypeScript imports make missing style exports and module paths visible to tooling; this does not mean TypeScript validates all CSS declarations or nested class selectors. Keep selectors scoped beneath the owning styled wrapper. Preserve semantic elements when wrapping content, including `article`, `main` and the document shell. Reuse exported styled components as selectors where component relationships require it.
+Использовать компоненты `styled` из `@linaria/react`, экспортируемые из расположенных рядом файлов `styles.ts`. Они должны служить обёртками страниц и компонентов; ориентир — `app/pages/MainPage/styles.ts` и использующий его `index.tsx`.
 
-Keep mobile-first rules and verify that the production build extracts the styles and links the resulting CSS. Do not claim HMR, dynamic-style or hydration behavior has been verified merely because type checking passes.
+Не подключать отдельные `.css` и не заменять эту схему на CSS Modules. Именованные импорты позволяют обнаруживать отсутствующие экспорты и пути, но не означают, что TypeScript проверяет все CSS-объявления и вложенные селекторы.
 
-## Coding conventions
+Ограничивать селекторы соответствующей стилизованной обёрткой. Сохранять семантику `article`, `main` и оболочки документа. При необходимости использовать экспортированные стилизованные компоненты в селекторах.
 
-- Do not use `export default`. Use named exports only.
-- Do not use barrel exports in `index.ts`/`index.tsx` files. Each module exports its own declarations directly.
-- Declare React components using `React.FC`, not plain function declarations.
-- Ensure maximum type coverage. Explicitly type exported constants, function parameters, return values, and data structures. Avoid `any` and untyped object literals.
+Сначала задавать мобильные стили. Проверять, что производственная сборка извлекает CSS и подключает полученные файлы. Успешная проверка типов не подтверждает работу HMR, динамических стилей или гидратации.
 
-## Agreed technology choices
+## Правила кода
 
-- Node.js: JavaScript execution environment for development/build tooling and the production HTTP service. Do not introduce Bun or a second runtime.
-- React: reusable components, typed props, and interactive UI.
-- TypeScript: check component and integration contracts.
-- Vite: development server, HMR, asset builds, code splitting, and lazy-loaded modules. Vite alone is not a router or an HTML prerendering system.
-- React Router: current routing, prerendering and head integration.
-- Linaria: current component styling and build-time CSS extraction.
-- Traefik: the external entry point for TLS and routing in development and production.
-- Varnish: production HTTP caching.
-- Docker Compose: reproducible service environments.
-- No Nginx.
+- Не использовать `export default`; только именованные экспорты.
+- Не создавать сборные переэкспорты в `index.ts` и `index.tsx`. Каждый модуль экспортирует собственные объявления.
+- Объявлять React-компоненты через `React.FC`, а не обычные объявления функций.
+- Обеспечивать максимальное покрытие типами. Явно типизировать экспортируемые константы, параметры и результаты функций, структуры данных. Избегать `any` и нетипизированных объектных литералов.
 
-Do not introduce a backend framework or router such as Hono merely to serve files. Choose a small maintained Node.js serving solution when needed, based on required HTTP behavior. Avoid hand-writing a general-purpose file server.
+## Согласованные технологии
 
-## Required website behavior
+- Node.js — среда выполнения инструментов разработки, сборки и производственного HTTP-сервиса. Не добавлять Bun или вторую среду выполнения.
+- React — компоненты и интерактивный интерфейс.
+- TypeScript — проверка контрактов компонентов и интеграций.
+- Vite — сервер разработки, HMR, сборка ресурсов, разделение кода и отложенная загрузка. Сам по себе Vite не является маршрутизатором или системой предварительного рендеринга HTML.
+- React Router — текущая маршрутизация, предварительный рендеринг и управление метаданными.
+- Linaria — стили компонентов и извлечение CSS при сборке.
+- Traefik — внешняя точка входа, TLS и маршрутизация.
+- Varnish — производственное HTTP-кеширование.
+- Docker Compose — воспроизводимое окружение сервисов.
+- Nginx не использовать.
 
-The website must support React components and SPA navigation without full-document reloads for normal internal page transitions.
+Не добавлять серверный фреймворк или маршрутизатор вроде Hono только ради раздачи файлов. При необходимости выбрать небольшое поддерживаемое решение для Node.js на основании требований к HTTP. Не писать универсальный файловый сервер самостоятельно.
 
-Plan for build-time rendering of public pages followed by React hydration. Some parts should be eligible to remain static; others require hydration and later updates. Determine how the chosen integration supports this. Do not assume prerendered React components are automatically excluded from client JavaScript.
+## Поведение сайта
 
-Initial client rendering must agree with generated HTML. Browser-only updates happen at an appropriate later phase.
+Поддерживать React-компоненты и переходы внутри сайта без полной перезагрузки документа.
 
-Required integration capabilities:
+Для публичных страниц предусматривать рендеринг при сборке с последующей гидратацией React. Определять, какие части могут оставаться статическими, а каким нужна интерактивность. Не считать, что предварительно отрисованные компоненты автоматически исключены из клиентского JavaScript.
 
-- Direct opening and refreshing of public URLs.
-- SPA navigation with working browser history, scroll behavior, and focus handling.
-- Initial HTML and page metadata suitable for search engines.
-- Head/metadata updates during client navigation.
-- Route-level code splitting and lazy loading of optional/heavy features.
-- Error boundaries and handling of route/chunk loading failures.
-- Correct handling of unknown URLs and missing assets; no blanket successful HTML response for every path.
+Начальный клиентский рендеринг должен совпадать с полученным HTML. Обновления, доступные только в браузере, выполнять на подходящем последующем этапе.
 
-Request-time SSR is not currently required. Build-time server rendering does not imply a permanent rendering service.
+Обязательные возможности интеграции:
 
-## Open decisions
+- Прямое открытие и обновление публичных URL.
+- Переходы без перезагрузки с работающей историей, прокруткой и управлением фокусом.
+- Начальный HTML и метаданные, пригодные для поисковых систем.
+- Обновление заголовка и метаданных при переходах.
+- Разделение кода по маршрутам и отложенная загрузка тяжёлых возможностей.
+- Границы ошибок и обработка сбоев загрузки маршрутов и фрагментов кода.
+- Корректные ответы для неизвестных URL и отсутствующих ресурсов; не возвращать успешный HTML для любого пути.
 
-Continue verifying the existing React Router integration for navigation, prerendering, hydration and Head management. Do not replace it or introduce a custom framework without a concrete need.
+Рендеринг на сервере при каждом запросе сейчас не требуется. Серверный рендеринг во время сборки не означает необходимость постоянного сервиса рендеринга.
 
-Choose the production Node.js file-serving implementation and its routing/error behavior.
+## Открытые технические решения
 
-Linaria is the selected styling convention. Focused verification of cross-file references, dynamic values, hydration, HMR and lazy CSS delivery remains necessary as those capabilities are used.
+Продолжать проверку существующей интеграции React Router: навигация, предварительный рендеринг, гидратация и метаданные. Не заменять её и не создавать собственный фреймворк без конкретной необходимости.
 
-## Environments
+Проверить актуальное решение для производственной раздачи файлов Node.js и его поведение при маршрутизации и ошибках; если решение ещё не принято, выбрать его по требованиям.
 
-Development request path:
+Для Linaria по мере использования проверять ссылки между файлами, динамические значения, гидратацию, HMR и отложенную доставку CSS.
 
-    Browser -> Traefik -> Vite development server -> source files
+Для карты и поиска отдельно определить поставщика карты, требования к ключам, стоимость, атрибуцию, источники данных и поведение при сбоях. Не считать старые данные актуальными без проверки.
 
-Direct development access bypasses Varnish. Development may also intentionally run through Varnish to investigate caching; do not diagnose that arrangement as a configuration error by itself. Choose the appropriate endpoint for each check. Ensure the HMR connection works through Traefik. Use hot updates where supported and automatic reloads where necessary.
+## Окружения
 
-Production request path:
+Путь запроса при разработке:
 
-    Browser -> Traefik -> Varnish -> Node.js HTTP service -> build artifacts
+    Браузер -> Traefik -> сервер разработки Vite -> исходные файлы
 
-Provide a production-preview workflow using the real built artifacts and production request path. Vite's development server is not the production server.
+Прямой доступ к разработке обходит Varnish. Для исследования кеширования разработка может намеренно идти через Varnish; само по себе это не ошибка. Выбирать подходящий адрес для каждой проверки. Обеспечить HMR через Traefik, горячие обновления там, где они поддерживаются, и автоматическую перезагрузку при необходимости.
 
-Separate environment-specific configuration while sharing source code and build logic. Pin the chosen supported runtime/tool versions and use a lockfile. Do not assume port availability or change unrelated services.
+Производственный путь запроса:
 
-The production artifact should contain the files and server dependencies actually needed to run it, not the development environment.
+    Браузер -> Traefik -> Varnish -> HTTP-сервис Node.js -> результаты сборки
 
-## Cache and HTTP contract
+Предусмотреть предварительный просмотр реальной производственной сборки через этот путь. Сервер разработки Vite не является производственным сервером.
 
-Make caching explicit and verifiable:
+Разделять настройки окружений, сохраняя общие исходники и логику сборки. Фиксировать поддерживаемые версии инструментов и использовать файл фиксации зависимостей. Проверять доступность портов, не менять посторонние сервисы.
 
-- HTML must become fresh after publication according to a defined deployment/cache policy.
-- Content-hashed assets may have long-lived immutable caching.
-- Development updates must never be hidden by production caching.
-- Missing assets must return appropriate failure statuses, not an SPA HTML fallback.
-- Unknown public URLs must have an intentional 404 policy, verified against the chosen routing integration.
+Производственная поставка должна содержать только необходимые файлы и серверные зависимости, а не всё окружение разработки.
 
-Document cache refresh/invalidation as part of publication before declaring production readiness. Do not expose cache administration publicly.
+## Кеширование и HTTP
 
-## Verification for this phase
+Сделать политику кеширования явной и проверяемой:
 
-Create a small representative site that can demonstrate:
+- После публикации HTML должен обновляться согласно определённой политике развёртывания и кеша.
+- Ресурсы с хешем содержимого могут иметь длительное неизменяемое кеширование.
+- Производственный кеш не должен скрывать изменения при разработке.
+- Отсутствующие ресурсы должны возвращать соответствующий статус ошибки, а не HTML приложения.
+- Для неизвестных публичных URL определить и проверить поведение 404.
 
-1. Reproducible installation, development startup, and production build.
-2. React edits reflected through the Traefik development URL.
-3. A public page opened directly, then internal SPA navigation and back/forward navigation.
-4. Build-generated HTML and initial Head content, with successful hydration.
-5. At least one lazy route or feature whose JS is absent from the initial load and fetched when needed.
-6. Correct route and asset error behavior and a controlled rendering-error fallback.
-7. Serving the build through Node.js and the production proxy/cache path, with checked headers and cache behavior.
+До заявления о готовности к эксплуатации документировать обновление и сброс кеша при публикации. Не открывать управление кешем публично.
 
-Use type checking and focused automated checks. Vitest is a candidate test runner separate from Vite; browser tests can use Playwright. Add tests for meaningful behavior and integration risks, not to mirror trivial implementation.
+## Проверки при реализации
 
-Inspect actual build output and browser behavior. Do not claim performance, absence of runtime CSS, partial hydration, cache correctness, or successful code splitting without evidence.
+На представительном наборе страниц проверить:
 
-## History and documentation
+1. Воспроизводимую установку, запуск разработки и производственную сборку.
+2. Отображение изменений React через адрес разработки за Traefik.
+3. Прямое открытие страницы, внутренние переходы, историю назад и вперёд.
+4. HTML и метаданные, полученные при сборке, и успешную гидратацию.
+5. Отложенную загрузку маршрута или возможности, чей JavaScript отсутствует в начальной загрузке.
+6. Ошибки маршрутов, ресурсов и контролируемое резервное отображение при ошибке рендеринга.
+7. Раздачу сборки через Node.js и производственную цепочку прокси и кеша, включая заголовки и кеширование.
 
-Record implemented decisions, their motivating needs, known limitations, and reproducible commands. Preserve the distinction between intended and observed behavior.
+Использовать проверку типов и целевые автоматические проверки. Vitest — возможный отдельный инструмент тестирования; для браузерных проверок допустим Playwright. Тестировать значимое поведение и риски интеграции, а не повторять тривиальную реализацию.
 
-Use focused commits for coherent changes and versioned releases for reproducible milestones when requested as part of the workflow. Do not publish, deploy, or create remote releases merely because a local build succeeds.
+Изучать реальные результаты сборки и поведение браузера. Не заявлять о производительности, частичной гидратации, отсутствии CSS во время выполнения, правильности кеша и разделении кода без подтверждений.
 
-Gradually turn verified implementation knowledge into English Solution pages. Keep documentation proportional to the project's current complexity.
+На этапе документации и рисунков не запускать сборки и тесты без необходимости и не выдавать макет за проверенный интерфейс.
+
+## История и документация
+
+Записывать реализованные решения, причины выбора, ограничения и воспроизводимые команды на русском. Различать ожидаемое и фактически проверенное поведение.
+
+Делать связные целевые коммиты и версионированные выпуски, когда это поручено владельцем. Успешная локальная сборка не является разрешением на публикацию, развёртывание или удалённый выпуск.
+
+Документация должна соответствовать текущей сложности проекта. Сохранять постановки задач и согласованные решения рядом с относящимися к ним материалами.

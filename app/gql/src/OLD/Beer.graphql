@@ -1,0 +1,31 @@
+query oldBeers($where: OldBeerWhereInput, $take: Int, $skip: Int) {
+  total: oldBeersCount(where: $where)
+  oldBeers(where: $where, take: $take, skip: $skip) {
+    id
+    beer_id
+    name
+    image
+    manufacturer
+    alcohol
+    placesCount
+  }
+}
+
+query oldBeer($id: String!, $take: Int, $skip: Int) {
+  oldBeer(id: $id) {
+    id
+    beer_id
+    name
+    description
+    manufacturer
+    alcohol
+    placesCount
+    places(take: $take, skip: $skip) {
+      id
+      price
+      Company {
+        ...OldCompanyNoNesting
+      }
+    }
+  }
+}

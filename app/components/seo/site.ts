@@ -1,9 +1,14 @@
-export const site = {
-  origin: 'https://haih.site',
-  name: 'HAIH',
-  language: 'en',
+export const site: {
+  origin: string
+  name: string
+  language: string
+  description: string
+} = {
+  origin: import.meta.env?.VITE_SITE_ORIGIN || 'http://localhost:3000',
+  name: 'Пивная карта',
+  language: 'ru',
   description:
-    'Building a website with AI, starting from requirements. Explore the working implementation, technology choices, experiments and lessons from HAIH.',
+    'Пиво, его описания и фотографии, связанные бары, пабы, магазины и пивоварни в разных городах — на «Пивной карте».',
 }
 
 // Preserve the identity published at https://fi1osof.ru/about.
@@ -29,10 +34,37 @@ export const author = {
 export function canonicalUrl(path: string): string {
   const url = new URL(path, site.origin)
   if (url.origin !== site.origin) {
-    throw new Error('Canonical pages must belong to the configured site origin')
+    throw new Error(
+      'Канонические страницы должны принадлежать настроенному домену сайта',
+    )
   }
-  url.search = ''
   url.hash = ''
-  url.pathname = url.pathname.replace(/\/+$/, '') || '/'
+  const allowed = new Set([
+    'page',
+    'comments_page',
+    'topics_page',
+    'name',
+    'color',
+    'container',
+    'filtered',
+    'pasteurized',
+    'city',
+    'type',
+    'beer_id',
+    'place_id',
+    'beer',
+    'search',
+    'section',
+  ])
+  for (const key of [...url.searchParams.keys()]) {
+    if (
+      !allowed.has(key) ||
+      (['page', 'comments_page', 'topics_page'].includes(key) &&
+        url.searchParams.get(key) === '1')
+    ) {
+      url.searchParams.delete(key)
+    }
+  }
+  url.searchParams.sort()
   return url.href
 }

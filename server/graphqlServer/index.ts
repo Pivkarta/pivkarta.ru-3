@@ -26,7 +26,6 @@ export async function setupGraphqlServer(
 ): Promise<{
   stop: () => Promise<void>
 }> {
-
   // WebSocket server for subscriptions
   const wsServer = new WebSocketServer({
     server: httpServer,

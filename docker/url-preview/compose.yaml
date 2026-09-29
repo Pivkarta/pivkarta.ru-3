@@ -1,0 +1,22 @@
+name: pivkarta-url-preview
+services:
+  traefik:
+    image: traefik:v3.6.1
+    command:
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.file.filename=/etc/traefik/dynamic.yaml
+    ports:
+      - 127.0.0.1:3180:80
+      - 127.0.0.1:3143:443
+    volumes:
+      - ./dynamic.yaml:/etc/traefik/dynamic.yaml:ro
+      - ./cert.pem:/cert.pem:ro
+      - ./key.pem:/key.pem:ro
+  varnish:
+    image: varnish:7.7.3
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./default.vcl:/etc/varnish/default.vcl:ro
+    command: -s malloc,64M

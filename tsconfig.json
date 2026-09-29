@@ -3,6 +3,7 @@
   "include": [
     "app/**/*",
     "server/**/*",
+    "scripts/**/*.ts",
     "*.ts",
     ".react-router/types/**/*",
     ".storybook/**/*.ts",

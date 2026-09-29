@@ -1,25 +1,20 @@
-import type { MetaFunction } from 'react-router'
-import { data } from 'react-router'
+import type { LoaderFunctionArgs, MetaFunction } from 'react-router'
 import { createSeoMeta, unavailableSeoMeta } from '../components/seo/SeoHeaders'
-import type { SeoHandle } from '../components/seo/SeoHeaders'
-export const handle = {
-  seo: {
-    title: 'Page not found — HAIH',
-    description: 'The requested page could not be found.',
-    noindex: true,
-  },
-} satisfies SeoHandle
+import { PublicPage, PublicError } from '../pages/Public'
+import { loadPublic } from '../pages/Public/load.server'
+import type { PublicPageData } from '../pages/Public/types'
 
-export const meta: MetaFunction = ({ error }) =>
-  error ? unavailableSeoMeta() : createSeoMeta(handle.seo)
-export const loader = (): ReturnType<typeof data<null>> =>
-  data(null, { status: 404 })
-
-export default function NotFound() {
-  return (
-    <>
-      <h1 tabIndex={-1}>Page not found</h1>
-      <p>This URL does not exist.</p>
-    </>
-  )
-}
+export const loader = (args: LoaderFunctionArgs): Promise<PublicPageData> =>
+  loadPublic(args)
+export const meta: MetaFunction<typeof loader> = ({ loaderData, error }) =>
+  error || !loaderData
+    ? unavailableSeoMeta()
+    : createSeoMeta({
+        title: `${loaderData.title} — Пивная карта`,
+        description:
+          loaderData.description || `${loaderData.title} — Пивная карта.`,
+        path: loaderData.canonical || loaderData.path,
+        noindex: loaderData.noindex,
+      })
+export const ErrorBoundary: React.FC = PublicError
+export default PublicPage
