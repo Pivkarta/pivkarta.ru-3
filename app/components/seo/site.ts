@@ -31,9 +31,9 @@ export const author = {
   ],
 }
 
-export function canonicalUrl(path: string): string {
-  const url = new URL(path, site.origin)
-  if (url.origin !== site.origin) {
+export function canonicalUrl(path: string, origin: string = site.origin): string {
+  const url = new URL(path, origin)
+  if (url.origin !== origin) {
     throw new Error(
       'Канонические страницы должны принадлежать настроенному домену сайта',
     )

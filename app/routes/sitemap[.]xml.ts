@@ -21,10 +21,20 @@ import { canonicalUrl } from '../components/seo/site'
 function xml(value: string): string {
   return value.replace(/[<>&"']/g, (char) => `&#${char.charCodeAt(0)};`)
 }
-function response(type: 'sitemapindex' | 'urlset', paths: string[]): Response {
+function response(
+  type: 'sitemapindex' | 'urlset',
+  paths: string[],
+  origin: string,
+): Response {
   const tag = type === 'sitemapindex' ? 'sitemap' : 'url'
+  // В индексе page=1 обозначает отдельный XML с первой пачкой URL.
+  const links = paths.map((path): string =>
+    type === 'sitemapindex'
+      ? new URL(path, origin).href
+      : canonicalUrl(path, origin),
+  )
   return new Response(
-    `<?xml version="1.0" encoding="UTF-8"?>\n<${type} xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths.map((path) => `<${tag}><loc>${xml(canonicalUrl(path))}</loc></${tag}>`).join('')}</${type}>`,
+    `<?xml version="1.0" encoding="UTF-8"?>\n<${type} xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${links.map((link) => `<${tag}><loc>${xml(link)}</loc></${tag}>`).join('')}</${type}>`,
     { headers: { 'Content-Type': 'application/xml; charset=utf-8' } },
   )
 }
@@ -47,6 +57,7 @@ export const loader = async ({
     return response(
       'sitemapindex',
       sections.map((name) => `/sitemap.xml?section=${name}`),
+      url.origin,
     )
   }
   if (!sections.includes(section)) {
@@ -54,19 +65,25 @@ export const loader = async ({
   }
   if (section === 'main') {
     const cities = await db<CityRow>('City').select('alias')
-    return response('urlset', [
-      '/',
-      '/companies',
-      '/beer/showlist/',
-      '/blog/showlist/',
-      '/profile/showlist/',
-      '/comments/',
-      '/city/',
-      '/map/',
-      '/contacts.html',
-      ...['bar', 'shop', 'brewery'].map((type) => `/place/index/type/${type}/`),
-      ...cities.map((city) => `/map/?city=${encodeURIComponent(city.alias)}`),
-    ])
+    return response(
+      'urlset',
+      [
+        '/',
+        '/companies',
+        '/beer/showlist/',
+        '/blog/showlist/',
+        '/profile/showlist/',
+        '/comments/',
+        '/city/',
+        '/map/',
+        '/contacts.html',
+        ...['bar', 'shop', 'brewery'].map(
+          (type) => `/place/index/type/${type}/`,
+        ),
+        ...cities.map((city) => `/map/?city=${encodeURIComponent(city.alias)}`),
+      ],
+      url.origin,
+    )
   }
   const query = { beers, places: companies, topics, users, comments }[
     section as 'beers' | 'places' | 'topics' | 'users' | 'comments'
@@ -84,6 +101,7 @@ export const loader = async ({
         { length: pages },
         (_, index) => `/sitemap.xml?section=${section}&page=${index + 1}`,
       ),
+      url.origin,
     )
   }
   const page = requirePage(url.searchParams)
@@ -107,5 +125,6 @@ export const loader = async ({
               ? profilePath(row.user_id)
               : commentPath(row.comment_id),
     ),
+    url.origin,
   )
 }

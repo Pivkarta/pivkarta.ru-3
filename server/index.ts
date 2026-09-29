@@ -88,10 +88,9 @@ async function startServer() {
     const sirv = (await import('sirv')).default
     app.use(sirv('build/client', { extensions: [] }))
 
-    // TODO Fix imports
-    const build =
-      // @ts-expect-error prod bundles
-      (await import('build/server/index.js')) as ServerBuild
+    // Путь относительно собранного build/node/index.js.
+    const buildUrl: URL = new URL('../server/index.js', import.meta.url)
+    const build = (await import(buildUrl.href)) as ServerBuild
     app.all('/{*splat}', createRequestHandler({ build }))
   }
 
